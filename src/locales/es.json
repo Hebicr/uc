@@ -1,0 +1,38 @@
+{
+  "login": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "show_password": "Mostrar contraseña",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "login_button": "Iniciar sesión",
+    "signup": "Regístrate ahora",
+    "invalid_credentials": "Credenciales inválidos",
+    "error_database": "Error en la base de datos",
+    "user_not_found": "Usuario no encontrado",
+    "incorrect_password": "Contraseña incorrecta",
+    "operation_error": "Error en la operación"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "invalid_email": "Correo electrónico inválido"
+  },
+  "header":{
+    "theme":"Tema"
+  },
+  "errors": {
+    "page_not_found": "Página no encontrada",
+    "go_home": "Login"
+  },
+  "config_account":{
+    "sounds":"Sonidos",
+    "appearance":"Apariencia",
+    "language":"Lenguaje",
+    "preferences":"Preferencias",
+    "close":"Cerrar"
+  },
+  "menu_account":{
+    "account":"Cuenta",
+    "preferences":"Preferencias",
+    "logoff":"Cerrar sesión"
+  }
+}

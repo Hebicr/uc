@@ -1,0 +1,38 @@
+{
+  "login": {
+    "email": "Email address",
+    "password": "Password",
+    "show_password": "Show password",
+    "forgot_password": "Forgot login password?",
+    "login_button": "Log In",
+    "signup": "Sign up now",
+    "invalid_credentials": "Invalid credentials",
+    "error_database": "Database error",
+    "user_not_found": "User not found",
+    "incorrect_password": "Incorrect password",
+    "operation_error": "Error in the operation"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalid_email": "Invalid email address"
+  },
+  "header":{
+    "theme":"Theme"
+  },
+  "errors": {
+    "page_not_found": "Page not found",
+    "go_home": "Login"
+  },
+  "config_account":{
+    "sounds":"Sounds",
+    "appearance":"Appearance",
+    "language":"Language",
+    "preferences":"Preferences",
+    "close":"Close"
+  },
+  "menu_account":{
+    "account":"Account",
+    "preferences":"Preferences",
+    "logoff":"Log off"
+  }
+}

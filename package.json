@@ -1,0 +1,40 @@
+{
+  "name": "uc",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start:dev": "cross-env NODE_ENV=development node backend/server.js",
+    "start:test": "cross-env NODE_ENV=test node backend/server.js",
+    "start:prod": "cross-env NODE_ENV=production node backend/server.js",
+    "init-db": "cross-env NODE_ENV=development node backend/init_db.js"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "axios": "^1.11.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.0",
+    "dotenv-flow": "^4.1.0",
+    "express": "^5.1.0",
+    "i18next": "^25.3.2",
+    "i18next-fs-backend": "^2.6.0",
+    "i18next-http-middleware": "^3.7.4",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.2",
+    "sass": "^1.89.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "vue": "^3.5.17",
+    "vue-i18n": "^9.14.5",
+    "vue-router": "^4.5.1",
+    "vuetify": "^3.9.0-beta.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "cross-env": "^7.0.3",
+    "vite": "^7.0.4"
+  }
+}
