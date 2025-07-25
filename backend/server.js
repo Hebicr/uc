@@ -1,5 +1,5 @@
 import dotenvFlow from 'dotenv-flow'
-dotenvFlow.config()
+dotenvFlow.config({ path: './backend' })
 
 import express from 'express'
 import cors from 'cors'

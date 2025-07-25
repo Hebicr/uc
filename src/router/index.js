@@ -1,18 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import routes from './routes'
+import routes from './routes'  // el array que ya tienes definido
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 })
 
-// Middleware de auth
+// Función para obtener el token (puede ser localStorage, cookies, Vuex, etc)
+function getToken() {
+  return localStorage.getItem('token')  // asumiendo que lo guardas en localStorage
+}
+
+// Navigation guard global
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
-  if (to.meta.requiresAuth && !token) {
-    next({ name: 'login' })
+  if (to.meta.requiresAuth) {
+    const token = getToken()
+
+    if (!token) {
+      // No hay token: redirigir a login
+      next({ name: 'login' })
+    } else {
+      // Aquí opcional: podrías validar el token con una función que verifique la expiración
+      next()
+    }
   } else {
-    next()
+    next() // la ruta no requiere autenticación
   }
 })
 

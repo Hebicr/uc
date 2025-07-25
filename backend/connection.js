@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise'
 import dotenvFlow from 'dotenv-flow'
-dotenvFlow.config()
+dotenvFlow.config({ path: './backend' })
 
 export const dbWithoutDatabase = mysql.createPool({
   host: process.env.DB_HOST,

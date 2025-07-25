@@ -21,7 +21,7 @@
   },
   "errors": {
     "page_not_found": "Page not found",
-    "go_home": "Login"
+    "go_home": "Back"
   },
   "config_account":{
     "sounds":"Sounds",
@@ -34,5 +34,8 @@
     "account":"Account",
     "preferences":"Preferences",
     "logoff":"Log off"
+  },
+  "main": {
+    "title": "My App"
   }
 }

@@ -21,7 +21,7 @@
   },
   "errors": {
     "page_not_found": "Página no encontrada",
-    "go_home": "Login"
+    "go_home": "Atras"
   },
   "config_account":{
     "sounds":"Sonidos",
@@ -34,5 +34,8 @@
     "account":"Cuenta",
     "preferences":"Preferencias",
     "logoff":"Cerrar sesión"
+  },
+  "main": {
+    "title": "Mi App"
   }
 }

@@ -8,5 +8,4 @@ export default [
   { path: '/main', name: 'main', component: MainView, meta: { requiresAuth: true } },
   { path: '/', redirect: '/login' },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
-
 ]

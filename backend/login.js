@@ -12,6 +12,11 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: req.t('login.missing_credentials') })
   }
 
+  if (!process.env.JWT_SECRET) {
+    console.error('JWT_SECRET no está definido')
+    return res.status(500).json({ error: 'Internal server error' })
+  }
+
   try {
     const [results] = await dbWithDatabase.query('SELECT * FROM users WHERE email = ?', [email])
 
@@ -26,9 +31,12 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: req.t('login.incorrect_password') })
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: '2h',
-    })
+    // Generar token JWT con id y email
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    )
 
     res.json({ token, user: { id: user.id, email: user.email } })
   } catch (err) {

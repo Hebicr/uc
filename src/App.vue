@@ -1,3 +1,4 @@
+<!-- App.vue -->
 <template>
   <v-app>
     <component :is="currentHeader" />
@@ -23,6 +24,6 @@ const route = useRoute()
 const currentHeader = computed(() => {
   if (route.name === 'login') return AppHeaderLogin
   if (route.name === 'main') return AppHeaderMain
-  return AppHeaderLogin // header por defecto para otras rutas
+  return AppHeaderLogin
 })
 </script>

@@ -19,6 +19,7 @@
           variant="outlined"
           :error="errors.email !== ''"
           :error-messages="errors.email"
+          autocomplete="email"
         />
 
         <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
@@ -40,6 +41,7 @@
           @click:append-inner="visible = !visible"
           :error="errors.password !== ''"
           :error-messages="errors.password"
+          autocomplete="current-password"
         />
 
         <v-alert
@@ -76,6 +78,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 const apiUrl = import.meta.env.VITE_API_URL
+console.log(import.meta.env.VITE_API_URL)
 
 const { t } = useI18n()
 const router = useRouter()
@@ -141,6 +144,7 @@ const login = async () => {
   // ⛔️ Aquí mejoras la captura
   const serverMsg = error?.response?.data?.error
   errorMessage.value = serverMsg || t('login.operation_error')
+  password.value = ''
 }
 
   loading.value = false
