@@ -10,7 +10,9 @@
     "error_database": "Database error",
     "user_not_found": "User not found",
     "incorrect_password": "Incorrect password",
-    "operation_error": "Error in the operation"
+    "operation_error": "Error in the operation",
+    "session_already_active": "Active Section",
+    "session_expired": "Your session has expired. Please log in again"
   },
   "validation": {
     "required": "This field is required",
@@ -28,7 +30,13 @@
     "appearance":"Appearance",
     "language":"Language",
     "preferences":"Preferences",
-    "close":"Close"
+    "close":"Close",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "blueNight": "Blue night",
+      "softLight": "Soft Light"
+    }
   },
   "menu_account":{
     "account":"Account",

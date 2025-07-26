@@ -66,6 +66,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 import ModalAppConfigAccount from '@/components/AppModalConfigAccount.vue'
+import api from '@/api/axios'
 
 const router = useRouter()
 const menu = ref(false)
@@ -78,14 +79,40 @@ function toggleDrawer() {
   drawer.value = !drawer.value
 }
 
-function goMain() {
-  router.push({ name: 'main' })
+async function goMain() {
+  const token = localStorage.getItem('token')
+  if (!token) {
+    return router.push({ name: 'login' })
+  }
+
+  try {
+    await api.post('/api/validate-token', {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    router.push({ name: 'main' })
+  } catch (error) {
+    localStorage.removeItem('token')
+    router.push({ name: 'login', query: { error: 'session expired' } })
+  }
 }
 
-const logout = () => {
-  localStorage.removeItem('token')
-  router.push({ name: 'login' })
-  menu.value = false
+const logout = async () => {
+  try {
+    await api.post('/api/logout', {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+  } catch (err) {
+    console.warn('Error al cerrar sesión (posiblemente token inválido):', err)
+    // No hace falta mostrar error si falla, ya estamos cerrando sesión
+  } finally {
+    localStorage.removeItem('token')
+    menu.value = false
+    router.push({ name: 'login' })
+  }
 }
 
 const ModalAppConfigAccountShow = ref(false)

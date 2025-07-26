@@ -30,12 +30,16 @@
 <script setup>
 import { computed, onMounted } from 'vue'
 import { useTheme } from 'vuetify'
+import { useI18n } from 'vue-i18n'
 
 const theme = useTheme()
+const { t } = useI18n()
 
 const themes = [
-  { key: 'light', label: 'Claro', icon: 'mdi-white-balance-sunny' },
-  { key: 'dark', label: 'Oscuro', icon: 'mdi-weather-night' },
+  { key: 'light', label: computed(() => t('config_account.themes.light')) , icon: 'mdi-white-balance-sunny' },
+  { key: 'dark', label: computed(() => t('config_account.themes.dark')), icon: 'mdi-weather-night' },
+  { key: 'blueNight', label: computed(() => t('config_account.themes.blueNight')), icon: 'mdi-snowflake' },
+  { key: 'softLight', label: computed(() => t('config_account.themes.softLight')), icon: 'mdi-weather-sunny' },
 ]
 
 const currentTheme = computed(() => theme.global.name.value || 'light')

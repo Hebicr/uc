@@ -73,22 +73,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import axios from 'axios'
-const apiUrl = import.meta.env.VITE_API_URL
-console.log(import.meta.env.VITE_API_URL)
+import api from '@/api/axios.js'
 
 const { t } = useI18n()
 const router = useRouter()
+const errorMessage = ref(null)
+//const errorMessage = ref('')
 
 const demoMode = true
 
 const email = ref(demoMode ? 'admin@test.com' : '')
 const password = ref(demoMode ? '123456' : '')
 const visible = ref(false)
-const errorMessage = ref('')
 const loading = ref(false)
 
 const errors = ref({
@@ -128,7 +127,7 @@ const login = async () => {
   try {
   const locale = localStorage.getItem('locale') || 'es'
 
-  const response = await axios.post(`${apiUrl}/api/login`, {
+  const response = await api.post('/api/login', {
     email: email.value,
     password: password.value,
   }, {
@@ -142,11 +141,19 @@ const login = async () => {
   router.push({ name: 'main' })
 } catch (error) {
   // ⛔️ Aquí mejoras la captura
-  const serverMsg = error?.response?.data?.error
+  // console.log('Login error:', error)
+  const serverMsg = error?.response?.data?.error ?? error?.message
   errorMessage.value = serverMsg || t('login.operation_error')
   password.value = ''
 }
-
   loading.value = false
 }
+
+onMounted(() => {
+  const queryError = router.currentRoute.value.query.error
+  if (queryError === 'session expired') {
+    errorMessage.value = t('login.session_expired')
+  }
+})
+
 </script>

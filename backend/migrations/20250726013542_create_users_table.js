@@ -3,6 +3,7 @@ export function up(knex) {
     table.increments('id').primary()
     table.string('email').notNullable().unique()
     table.string('passwordHash').notNullable()
+    table.string('currentTokenId')
     table.timestamp('createdAt').defaultTo(knex.fn.now())
   })
 }

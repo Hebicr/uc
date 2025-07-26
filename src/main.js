@@ -13,8 +13,7 @@ import en from './locales/en.json'
 
 import '@mdi/font/css/materialdesignicons.css'
 
-// Lee el modo oscuro guardado o usa false por defecto
-const savedDark = localStorage.getItem('dark') === 'true'
+const savedTheme = localStorage.getItem('theme') || 'light'
 
 const vuetify = createVuetify({
   components,
@@ -23,7 +22,7 @@ const vuetify = createVuetify({
     defaultSet: 'mdi',
   },
   theme: {
-    defaultTheme: savedDark ? 'dark' : 'light',
+    defaultTheme: savedTheme,
     themes: {
       light: {
         dark: false,
@@ -50,9 +49,35 @@ const vuetify = createVuetify({
           success: '#4CAF50',
           warning: '#FB8C00'
         }
+      },
+      blueNight: {
+        dark: true,
+        colors: {
+          background: '#0D1B2A',
+          surface: '#1B263B',
+          primary: '#415A77',
+          secondary: '#778DA9',
+          error: '#E63946',
+          info: '#00B4D8',
+          success: '#06D6A0',
+          warning: '#FFD166'
+        }
+      },
+      softLight: {
+        dark: false,
+        colors: {
+          background: '#F5F5F5',
+          surface: '#FFFFFF',
+          primary: '#8EACBB',
+          secondary: '#B0BEC5',
+          error: '#D32F2F',
+          info: '#1976D2',
+          success: '#388E3C',
+          warning: '#FBC02D'
+        }
       }
-    },
-  },
+    }
+  }
 })
 
 const i18n = createI18n({

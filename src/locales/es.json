@@ -10,7 +10,9 @@
     "error_database": "Error en la base de datos",
     "user_not_found": "Usuario no encontrado",
     "incorrect_password": "Contraseña incorrecta",
-    "operation_error": "Error en la operación"
+    "operation_error": "Error en la operación",
+    "session_already_active": "Sección activa",
+    "session_expired": "Tu sesión ha expirado. Por favor inicia sesión de nuevo."
   },
   "validation": {
     "required": "Este campo es obligatorio",
@@ -28,7 +30,13 @@
     "appearance":"Apariencia",
     "language":"Lenguaje",
     "preferences":"Preferencias",
-    "close":"Cerrar"
+    "close":"Cerrar",
+    "themes": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "blueNight": "Azul Oscuro",
+      "softLight": "Claro suave"
+    }
   },
   "menu_account":{
     "account":"Cuenta",
