@@ -1,48 +1,57 @@
-import { dbWithoutDatabase, dbWithDatabase } from './connection.js'
+import mysql from 'mysql2/promise'
 import dotenvFlow from 'dotenv-flow'
-import bcrypt from 'bcrypt'
-dotenvFlow.config()
+import { exec } from 'child_process'
+import knexConfig from './knexfile.js'
+import knexLib from 'knex'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const initDatabase = async () => {
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Cargar variables de entorno según NODE_ENV
+dotenvFlow.config({ path: path.resolve(__dirname) })
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, NODE_ENV } = process.env
+
+const knexEnv = NODE_ENV || 'development'
+
+const createDatabaseIfNotExists = async () => {
+  const connection = await mysql.createConnection({
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD
+  })
+
+  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\``)
+  console.log(`✅ Base de datos '${DB_NAME}' verificada o creada.`)
+  await connection.end()
+}
+
+const runMigrations = async () => {
+  const knex = knexLib(knexConfig[knexEnv])
+  await knex.migrate.latest()
+  console.log('✅ Migraciones aplicadas.')
+  await knex.destroy()
+}
+
+const runSeeds = async () => {
+  const knex = knexLib(knexConfig[knexEnv])
+  await knex.seed.run()
+  console.log('✅ Seeds aplicados.')
+  await knex.destroy()
+}
+
+const init = async () => {
   try {
-    const dbName = process.env.DB_NAME
-    if (!dbName) throw new Error('DB_NAME no definido')
+    if (!DB_NAME) throw new Error('DB_NAME no definido en .env')
 
-    console.log('Creando base de datos:', dbName)
-    await dbWithoutDatabase.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``)
-    console.log('Base creada o ya existía.')
-
-    console.log('Creando tabla users...')
-    await dbWithDatabase.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        passwordHash VARCHAR(255) NOT NULL,
-        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `)
-    console.log('Tabla users creada o ya existía.')
-
-    // Datos de usuario a insertar
-    const email = 'admin@test.com'
-    const plainPassword = '123456'
-
-    // Hashear contraseña con bcrypt (saltRounds = 10)
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(plainPassword, saltRounds)
-
-    // Insertar usuario
-    const sql = 'INSERT INTO users (email, passwordHash) VALUES (?, ?)'
-    await dbWithDatabase.query(sql, [email, passwordHash])
-    console.log('Usuario ejemplo insertado con contraseña hasheada.')
-
-    await dbWithoutDatabase.end()
-    await dbWithDatabase.end()
-
+    await createDatabaseIfNotExists()
+    await runMigrations()
+    await runSeeds()
   } catch (err) {
-    console.error('Error inicializando base:', err)
+    console.error('❌ Error al inicializar DB:', err)
     process.exit(1)
   }
 }
 
-initDatabase()
+init()

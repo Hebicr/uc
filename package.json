@@ -4,14 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"npm run start:dev\"",
     "build": "vite build",
     "preview": "vite preview",
     "start:dev": "cross-env NODE_ENV=development node backend/server.js",
     "start:test": "cross-env NODE_ENV=test node backend/server.js",
     "start:prod": "cross-env NODE_ENV=production node backend/server.js",
-    "init-db": "cross-env NODE_ENV=development node backend/init_db.js"
-  },
+    "init-db": "cross-env NODE_ENV=development node backend/init_db.js",
+    "init-db:prod": "cross-env NODE_ENV=production node backend/init_db.js",
+    "reset-db": "cross-env NODE_ENV=development knex --knexfile backend/knexfile.js migrate:rollback --all && knex --knexfile backend/knexfile.js migrate:latest && knex --knexfile backend/knexfile.js seed:run",
+    "reset-db:prod": "cross-env NODE_ENV=production knex --knexfile backend/knexfile.js migrate:rollback --all && knex --knexfile backend/knexfile.js migrate:latest && knex --knexfile backend/knexfile.js seed:run",
+    "dev:init": "npm run init-db && npm run dev",
+    "prod:init": "npm run init-db:prod && npm run prod",
+    "prod": "npm run build && npm run start:prod"
+},
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "axios": "^1.11.0",
@@ -34,6 +40,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.0",
+    "concurrently": "^9.2.0",
     "cross-env": "^7.0.3",
     "vite": "^7.0.4"
   }
