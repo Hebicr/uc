@@ -62,30 +62,6 @@ JWT_SECRET=claveSuperSegura
 
 ### Desarrollo
 
-```bash
-npm run dev
-```
-
-- Levanta el frontend (Vite) y backend (Express) en paralelo.
-- Usa `.env.development`.
-
-### Producción
-
-```bash
-npm run prod
-```
-
-- Compila el frontend (`vite build`)
-- Crea la base de datos (si no existe), aplica migraciones y seeds
-- Levanta el backend con `.env.production`
-
----
-
-## ⚙️ Scripts útiles
-## Scripts npm
-
-### Desarrollo
-
 | Comando             | Descripción                                             |
 |---------------------|---------------------------------------------------------|
 | `npm run dev`       | Levanta frontend y backend en modo desarrollo.          |
@@ -114,6 +90,10 @@ npm run prod
   ```bash
   npm run dev:init
 
+- Produccion completo:
+
+  ```bash
+  npm run prod:init
 
 
 ---
