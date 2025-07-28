@@ -35,23 +35,23 @@
     </v-app-bar>
 
     <!-- drawer controlado -->
-    <v-navigation-drawer v-model:modelValue="drawer" app color="surface" width="256">
+    <v-navigation-drawer permanent v-model:modelValue="drawer" app color="surface" width="256">
       <v-list nav dense>
         <v-list-item>
           <div>
-            <div class="text-h6">My Application</div>
-            <div class="text-subtitle-1">Vuetify</div>
+            <div class="text-h6">{{ $t('drawerLeft.title') }}</div>
           </div>
         </v-list-item>
         <v-divider class="my-2" />
-        <v-list-item link>
-          <v-list-item-title>List Item 1</v-list-item-title>
+        <v-list-item :to="{ name: 'users' }" link>
+          <v-icon left>mdi-account-circle</v-icon> {{ $t('drawerLeft.users') }}
         </v-list-item>
         <v-list-item link>
-          <v-list-item-title>List Item 2</v-list-item-title>
+          <v-icon left>mdi-cog-outline</v-icon> {{ $t('drawerLeft.config') }}
         </v-list-item>
-        <v-list-item link>
-          <v-list-item-title>List Item 3</v-list-item-title>
+        <v-divider class="my-2" />
+        <v-list-item @click="logout" class="clickable" style="color: red;">
+          <v-icon left>mdi-logout</v-icon> {{ $t('menu_account.logoff') }}
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

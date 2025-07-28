@@ -11,6 +11,7 @@ import path from 'path'
 import loginRouter from './routes/login.js'  
 import logoutRouter from './routes/logout.js'
 import validateRouter from './routes/validateToken.js'
+import usersRouter from './routes/users.js'
 
 // Carga traducciones
 const es = JSON.parse(fs.readFileSync(path.resolve('./src/locales/es.json'), 'utf-8'))
@@ -35,6 +36,7 @@ app.use(middleware.handle(i18next))
 app.use('/api/login', loginRouter)
 app.use('/api/logout', logoutRouter)
 app.use('/api', validateRouter)
+app.use('/api/users', usersRouter)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

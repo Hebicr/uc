@@ -45,5 +45,28 @@
   },
   "main": {
     "title": "Mi App"
+  },
+  "drawerLeft": {
+    "title": "Mi App",
+    "users": "Usuarios",
+    "config":"Configuración"
+  },
+  "usersView": {
+    "users": "Usuarios",
+    "refresh": "Actualizar",
+    "id":"Id",
+    "email":"Correo",
+    "actions":"Acciones",
+    "addUser": "Agregar Usuario",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña"
+  },
+  "messages": {
+    "noData": "No Hay Datos",
+    "passwordMismatch":"Las contraseñas no coinciden"
+  },
+  "buttons":{
+    "cancel":"Cancel",
+    "save":"Save"
   }
 }

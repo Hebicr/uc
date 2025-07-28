@@ -45,5 +45,28 @@
   },
   "main": {
     "title": "My App"
+  },
+  "drawerLeft": {
+    "title": "My App",
+    "users": "Users",
+    "config":"Config"
+  },
+  "usersView": {
+    "users": "Users",
+    "refresh": "Refresh",
+    "id":"Id",
+    "email":"Email",
+    "actions":"Actions",
+    "addUser": "Add User",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
+  },
+  "messages": {
+    "noData": "No Data",
+    "passwordMismatch":"Passwords do not match"
+  },
+  "buttons":{
+    "cancel":"Cancel",
+    "save":"Save"
   }
 }
