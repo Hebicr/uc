@@ -4,6 +4,7 @@ export function up(knex) {
     table.string('email').notNullable().unique()
     table.string('passwordHash').notNullable()
     table.string('currentTokenId')
+    table.string('role').notNullable()
     table.timestamp('createdAt').defaultTo(knex.fn.now())
   })
 }

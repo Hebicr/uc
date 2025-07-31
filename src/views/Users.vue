@@ -2,36 +2,31 @@
 <template>
   <v-card>
     <v-card-title>
-    <v-row class="align-center" style="width: 100%">
+      <v-row class="align-center" style="width: 100%">
         <v-col cols="6">
-        {{ $t('usersView.users') }}
+          {{ $t('usersView.users') }}
         </v-col>
-        <v-col cols="6" class="d-flex justify-end" >
-        <v-btn color="primary" @click="fetchUsers" prepend-icon="mdi-refresh" class="me-2">
+        <v-col cols="6" class="d-flex justify-end">
+          <v-btn color="primary" @click="fetchUsers" prepend-icon="mdi-refresh" class="me-2">
             {{ $t('usersView.refresh') }}
-        </v-btn>
-        <v-btn color="success" @click="openAddUserDialog" prepend-icon="mdi-plus">
+          </v-btn>
+          <v-btn color="success" @click="openAddUserDialog" prepend-icon="mdi-account-plus">
             {{ $t('usersView.addUser') }}
-        </v-btn>
+          </v-btn>
         </v-col>
-    </v-row>
+      </v-row>
     </v-card-title>
 
-
-    <v-data-table
-    :headers="headers"
-    :items="users"
-    :loading="loading"
-    class="elevation-1"
-    item-value="id"
-    show-headers
-    >
+    <v-data-table :headers="headers" :items="users" :loading="loading" class="elevation-1" item-value="id" show-headers>
       <template #item.actions="{ item }">
-        <v-btn icon size="small" color="primary" @click="editUser(item)">
-          <v-icon>mdi-pencil</v-icon>
+        <v-btn variant="elevated" color="primary" class="me-2" size="small" @click="editUser(item)">
+          <v-icon start>mdi-pencil</v-icon>
+          {{ $t('buttons.edit') }}
         </v-btn>
-        <v-btn icon size="small" color="error" @click="deleteUser(item)">
-          <v-icon>mdi-delete</v-icon>
+
+        <v-btn variant="elevated" color="error" size="small" @click="deleteUser(item)">
+          <v-icon start>mdi-delete</v-icon>
+          {{ $t('buttons.delete') }}
         </v-btn>
       </template>
 
@@ -41,34 +36,60 @@
     </v-data-table>
   </v-card>
 
-  <<v-dialog v-model="dialog" max-width="400px" persistent>
-  <v-card>
-    <v-card-title>{{ $t('usersView.addUser') }}</v-card-title>
-    <v-card-text>
-      <v-text-field v-model="newEmail" :label="$t('usersView.email')" required />
-      <v-text-field
-        v-model="newPassword"
-        :label="$t('usersView.password')"
-        type="password"
-        required
-      />
-      <v-text-field
-        v-model="confirmPassword"
-        :label="$t('usersView.confirmPassword')"
-        type="password"
-        required
-        :error="passwordsDoNotMatch"
-        :error-messages="passwordsDoNotMatch ? $t('usersView.passwordMismatch') : ''"
-      />
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer />
-      <v-btn text color="error" @click="closeAddUserDialog">{{ $t('buttons.cancel') }}</v-btn>
-      <v-btn color="success" @click="addUser">{{ $t('buttons.save') }}</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
+  <v-dialog v-model="dialog" max-width="500px" transition="dialog-bottom-transition" persistent>
+    <v-card elevation="3" class="rounded-x0">
+      <v-card-title class="text-h6 font-weight-bold">
+        <v-icon start class="me-2">mdi-account-plus</v-icon>
+        {{ $t('usersView.addUser') }}
+      </v-card-title>
 
+      <v-card-text class="pt-2">
+        <v-form ref="formNewUser">
+          <v-text-field
+            v-model="newEmail"
+            :label="$t('usersView.email')"
+            :rules="emailRules"
+            type="email"
+            autocomplete="off"
+            density="comfortable"
+            prepend-inner-icon="mdi-email-outline"
+            required
+          />
+          <v-text-field
+            v-model="newPassword"
+            :label="$t('usersView.password')"
+            :rules="passwordRules"
+            type="password"
+            autocomplete="off"
+            density="comfortable"
+            prepend-inner-icon="mdi-lock-outline"
+            required
+          />
+          <v-text-field
+            v-model="confirmPassword"
+            :label="$t('usersView.confirmPassword')"
+            :rules="confirmPasswordRules"
+            type="password"
+            autocomplete="off"
+            density="comfortable"
+            prepend-inner-icon="mdi-lock-check"
+            required
+          />
+        </v-form>
+      </v-card-text>
+
+      <v-card-actions class="justify-end">
+        <v-btn variant="elevated" color="error" class="me-2" size="small" @click="closeAddUserDialog">
+          <v-icon start>mdi-close</v-icon>
+          {{ $t('buttons.cancel') }}
+        </v-btn>
+        <v-btn variant="elevated" color="success" size="small" @click="addUser">
+          <v-icon start>mdi-content-save-all-outline</v-icon>
+          {{ $t('buttons.save') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -80,6 +101,8 @@ const loading = ref(false)
 const dialog = ref(false)
 const newEmail = ref('')
 const newPassword = ref('')
+const confirmPassword = ref('')
+const formNewUser = ref(null)
 const BASE_URL = import.meta.env.VITE_API_URL
 const { t } = useI18n()
 
@@ -111,6 +134,7 @@ const fetchUsers = async () => {
 const openAddUserDialog = () => {
   newEmail.value = ''
   newPassword.value = ''
+  confirmPassword.value = ''
   dialog.value = true
 }
 
@@ -118,7 +142,31 @@ const closeAddUserDialog = () => {
   dialog.value = false
 }
 
+const emailRules = [
+  (v) => !!v || t('newUser.required'),
+  (v) => /.+@.+\..+/.test(v) || t('newUser.invalidEmail'),
+]
+
+const passwordRules = [
+  (v) => !!v || t('newUser.required'),
+  (v) => v.length >= 6 || t('newUser.passwordTooShort'),
+]
+
+const confirmPasswordRules = [
+  (v) => !!v || t('newUser.required'),
+  (v) => v === newPassword.value || t('newUser.passwordMismatch'),
+]
+
 const addUser = async () => {
+  if (!formNewUser.value) {
+    console.warn('Formulario no encontrado')
+    return
+  }
+
+  const validationResult = await formNewUser.value.validate()
+    console.log('Valid?', validationResult)
+  if (!validationResult.valid) return
+
   try {
     const token = localStorage.getItem('token')
 
@@ -142,6 +190,7 @@ const addUser = async () => {
     const createdUser = await response.json()
     users.value.push(createdUser)
     closeAddUserDialog()
+    await fetchUsers()  // recarga usuarios luego de agregar uno nuevo
   } catch (error) {
     console.error('Error al agregar usuario:', error)
   }
@@ -157,4 +206,3 @@ const deleteUser = (user) => {
 
 onMounted(fetchUsers)
 </script>
-

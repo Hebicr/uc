@@ -21,7 +21,8 @@ api.interceptors.response.use(
       )
 
     if (shouldLogout) {
-      localStorage.removeItem('token')  // Elimina solo el token
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
       setTimeout(() => {
         const currentRoute = router.currentRoute.value
         if (currentRoute.name !== 'login') {

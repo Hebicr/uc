@@ -17,8 +17,8 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import flagEs from '@/assets/flags/cr.png'
-import flagGb from '@/assets/flags/us.png'
+import flagEs from '@/assets/flags/cr2.png'
+import flagGb from '@/assets/flags/us2.png'
 
 const { locale } = useI18n()
 

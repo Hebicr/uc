@@ -2,6 +2,7 @@
 import express from 'express'
 import { dbWithDatabase } from '../connection.js'
 import authMiddleware from '../../middleware/authenticateToken.js'
+import bcrypt from 'bcrypt'
 
 const router = express.Router()
 
@@ -27,14 +28,18 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 
   try {
-    // Aquí debes agregar lógica para encriptar password antes de guardar (bcrypt)
+    const hashedPassword = await bcrypt.hash(password, 10);
     const [result] = await dbWithDatabase.query(
-      'INSERT INTO users (email, password) VALUES (?, ?)',
-      [email, password]
+      'INSERT INTO users (email, passwordHash) VALUES (?, ?)',
+      [email, hashedPassword]
     )
     res.status(201).json({ id: result.insertId, email })
   } catch (error) {
     console.error('error creating user:', error)
+
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ error: 'Email already exists' })
+    }
     res.status(500).json({ error: 'Internal server error' })
   }
 })

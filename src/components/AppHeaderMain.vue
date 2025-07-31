@@ -9,29 +9,64 @@
         {{ $t('main.title') }}
       </div>
       <!-- menú usuario -->
-      <v-menu app color="primary" dark v-model="menu" :close-on-content-click="false" location="end" offset-y min-width="auto">
+      <v-menu
+        app
+        v-model="menu"
+        color="primary"
+        dark
+        :close-on-content-click="false"
+        location="end"
+        offset-y
+        min-width="auto"
+        
+      >
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon rounded="full">
+          <v-btn v-bind="props" icon rounded="full" aria-label="User menu">
             <v-icon size="30">mdi-account-circle</v-icon>
           </v-btn>
         </template>
-        <v-sheet elevation="2" rounded="lg" class="pa-4" :color="surfaceColor">
+
+        <v-sheet
+          elevation="2"
+          rounded="lg"
+          class="pa-0"
+          :color="surfaceColor"
+          style="min-width: 220px;"
+        >
           <v-list density="comfortable" nav>
-            <v-list-item class="clickable" prepend-icon="mdi-account-circle" :title="$t('menu_account.account')" />
+            <v-list-item link>
+              <v-list-item-icon>
+                <v-icon>mdi-account-circle</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ $t('menu_account.account') }}</v-list-item-title>
+                <v-list-item-subtitle>Correo: {{ user.email }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
             <v-divider class="my-2" />
+
             <v-list-item
-              class="clickable"
+              link
               prepend-icon="mdi-cog-outline"
               :title="$t('menu_account.preferences')"
               @click="openConfigModal"
             />
             <v-divider class="my-2" />
-            <v-list-item @click="logout" class="clickable" style="color: red;">
-              <v-icon left>mdi-logout</v-icon> {{ $t('menu_account.logoff') }}
-            </v-list-item>
+
+            <v-list-item
+              link
+              prepend-icon="mdi-logout"
+              :title="$t('menu_account.logoff')"
+              @click="logout"
+              class="text-error"
+            />
+            
           </v-list>
         </v-sheet>
       </v-menu>
+
     </v-app-bar>
 
     <!-- drawer controlado -->
@@ -62,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 import ModalAppConfigAccount from '@/components/AppModalConfigAccount.vue'
@@ -72,8 +107,16 @@ const router = useRouter()
 const menu = ref(false)
 const drawer = ref(false)
 const theme = useTheme()
+const user = ref({ email: '', role: '' })
 
 const surfaceColor = computed(() => theme.current.value.colors.surface)
+
+onMounted(() => {
+  const storedUser = JSON.parse(localStorage.getItem('user'))
+  if (storedUser) {
+    user.value = storedUser
+  }
+})
 
 function toggleDrawer() {
   drawer.value = !drawer.value
@@ -110,6 +153,7 @@ const logout = async () => {
     // No hace falta mostrar error si falla, ya estamos cerrando sesión
   } finally {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     menu.value = false
     router.push({ name: 'login' })
   }

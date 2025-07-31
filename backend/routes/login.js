@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const [results] = await dbWithDatabase.query('SELECT * FROM users WHERE email = ?', [email])
+    const [results] = await dbWithDatabase.query('SELECT id, email, passwordHash, currentTokenId, role FROM users WHERE email = ?', [email])
 
     if (results.length === 0) {
       await logSessionEvent({
@@ -95,12 +95,12 @@ router.post('/', async (req, res) => {
 
     // Crear token JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email, tokenId },
+      { id: user.id, email: user.email, tokenId , role:user.role},
       process.env.JWT_SECRET,
       { expiresIn: '2h' }
     )
 
-    res.json({ token, user: { id: user.id, email: user.email } })
+    res.json({ token, user: { id: user.id, email: user.email, role: user.role } })
   } catch (err) {
     console.error('DB error:', err)
     res.status(500).json({ error: req.t('login.error_database') })

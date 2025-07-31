@@ -56,14 +56,7 @@
       </v-row>
 
       <v-card-actions class="justify-end mt-6">
-        <v-btn
-        color="error"
-        variant="elevated"
-        @click="modelValue = false"
-      >
-      {{ t('config_account.close') }}
-      </v-btn>
-
+        <v-btn variant="elevated" color="error" class="me-0" size="small" @click="modelValue = false"><v-icon start>mdi-close</v-icon>{{ $t('config_account.close') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

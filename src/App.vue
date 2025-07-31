@@ -21,11 +21,22 @@ import AppHeaderMain from '@/components/AppHeaderMain.vue'
 
 const route = useRoute()
 
-const mainLayoutRoutes = ['main', 'users', 'settings', 'dashboard']
+const mainLayoutRoutes = new Set(['main', 'users', 'settings', 'dashboard'])
+const noHeaderRoutes = new Set(['login']) // Puedes agregar más aquí
 
 const currentHeader = computed(() => {
-  if (route.name === 'login') return AppHeaderLogin
-  if (mainLayoutRoutes.includes(route.name)) return AppHeaderMain
+  if (noHeaderRoutes.has(route.name)) return null
+  if (mainLayoutRoutes.has(route.name)) return AppHeaderMain
   return AppHeaderLogin
 })
+
+
 </script>
+
+<style scoped>
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+</style>

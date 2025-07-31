@@ -67,6 +67,14 @@
   },
   "buttons":{
     "cancel":"Cancel",
-    "save":"Save"
+    "save":"Save",
+    "edit":"Edit",
+    "delete":"Delete"
+  },
+  "newUser":{
+    "required": "This field is required",
+    "invalidEmail": "Invalid email",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "passwordMismatch": "Passwords do not match"
   }
 }
