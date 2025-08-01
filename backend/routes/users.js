@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await dbWithDatabase.query('SELECT id, email FROM users')
+    const [rows] = await dbWithDatabase.query('SELECT id, email, role FROM users')
     res.json(rows)
   } catch (err) {
     console.error('error loading users:', err)

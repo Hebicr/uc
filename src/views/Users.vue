@@ -17,7 +17,7 @@
       </v-row>
     </v-card-title>
 
-    <v-data-table :headers="headers" :items="users" :loading="loading" class="elevation-1" item-value="id" show-headers>
+    <v-data-table v-if="translatedHeaders.length" :headers="translatedHeaders" :items="users" :loading="loading" class="elevation-1" item-value="id" show-headers>
       <template #item.actions="{ item }">
         <v-btn variant="elevated" color="primary" class="me-2" size="small" @click="editUser(item)">
           <v-icon start>mdi-pencil</v-icon>
@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch  } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const users = ref([])
@@ -104,13 +104,30 @@ const newPassword = ref('')
 const confirmPassword = ref('')
 const formNewUser = ref(null)
 const BASE_URL = import.meta.env.VITE_API_URL
-const { t } = useI18n()
+const { t ,locale} = useI18n()
+const translatedHeaders = ref([])
 
-const headers = computed(() => [
-  { text: t('usersView.id'), value: 'id' },
-  { text: t('usersView.email'), value: 'email' },
-  { text: t('usersView.actions'), value: 'actions', sortable: false },
+const headers = ref([
+  { textKey: 'usersView.id', value: 'id' },
+  { textKey: 'usersView.email', value: 'email' },
+  { textKey: 'usersView.role', value: 'role' },
+  { textKey: 'usersView.actions', value: 'actions', sortable: false },
 ])
+
+onMounted(() => {
+  updateHeaders()
+})
+
+watch(locale, () => {
+  updateHeaders()
+})
+
+function updateHeaders() {
+  translatedHeaders.value = headers.value.map(h => ({
+    ...h,
+    title: t(h.textKey),
+  }))
+}
 
 const fetchUsers = async () => {
   loading.value = true
