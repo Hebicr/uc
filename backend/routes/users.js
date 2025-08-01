@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', authMiddleware, async (req, res) => {
-  const { email, password } = req.body
+  const { email, password, role } = req.body
 
   if (!email) {
     return res.status(400).json({ error: 'mail required' })
@@ -30,8 +30,8 @@ router.post('/', authMiddleware, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const [result] = await dbWithDatabase.query(
-      'INSERT INTO users (email, passwordHash) VALUES (?, ?)',
-      [email, hashedPassword]
+      'INSERT INTO users (email, passwordHash, role) VALUES (?, ?, ?)',
+      [email, hashedPassword, role]
     )
     res.status(201).json({ id: result.insertId, email })
   } catch (error) {

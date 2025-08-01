@@ -76,6 +76,12 @@
     "required": "Este campo es obligatorio",
     "invalidEmail": "Correo electrónico inválido",
     "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
-    "passwordMismatch": "Las contraseñas no coinciden"
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "invalidRole": "Rol no válido"
+  },
+  "roles": {
+    "admin": "Admin",
+    "user": "User",
+    "supervisor": "Supervisor"
   }
 }

@@ -75,6 +75,19 @@
             prepend-inner-icon="mdi-lock-check"
             required
           />
+          <v-combobox
+            v-model="selectedRole"
+            :label="t('usersView.role')"
+            :rules="roleRules"
+            density="compact"
+            :items="roleItems"
+            item-title="title"
+            item-value="value"
+            required
+            clearable
+            :editable="false"
+          />
+
         </v-form>
       </v-card-text>
 
@@ -102,10 +115,13 @@ const dialog = ref(false)
 const newEmail = ref('')
 const newPassword = ref('')
 const confirmPassword = ref('')
+const selectedRole = ref('')
 const formNewUser = ref(null)
 const BASE_URL = import.meta.env.VITE_API_URL
 const { t ,locale} = useI18n()
 const translatedHeaders = ref([])
+
+
 
 const headers = ref([
   { textKey: 'usersView.id', value: 'id' },
@@ -113,6 +129,14 @@ const headers = ref([
   { textKey: 'usersView.role', value: 'role' },
   { textKey: 'usersView.actions', value: 'actions', sortable: false },
 ])
+const roleValues = ['admin', 'user', 'supervisor']
+
+const roleItems = computed(() =>
+  roleValues.map(role => ({
+    value: role,
+    title: t(`roles.${role}`)
+  }))
+)
 
 onMounted(() => {
   updateHeaders()
@@ -152,6 +176,7 @@ const openAddUserDialog = () => {
   newEmail.value = ''
   newPassword.value = ''
   confirmPassword.value = ''
+  selectedRole.value = ''
   dialog.value = true
 }
 
@@ -174,6 +199,10 @@ const confirmPasswordRules = [
   (v) => v === newPassword.value || t('newUser.passwordMismatch'),
 ]
 
+const roleRules = [
+   (v) => !!v || t('newUser.required')
+]
+
 const addUser = async () => {
   if (!formNewUser.value) {
     console.warn('Formulario no encontrado')
@@ -183,7 +212,7 @@ const addUser = async () => {
   const validationResult = await formNewUser.value.validate()
     console.log('Valid?', validationResult)
   if (!validationResult.valid) return
-
+  console.log(selectedRole.value.value);
   try {
     const token = localStorage.getItem('token')
 
@@ -196,6 +225,7 @@ const addUser = async () => {
       body: JSON.stringify({
         email: newEmail.value,
         password: newPassword.value,
+        role : selectedRole.value.value,
       }),
     })
 

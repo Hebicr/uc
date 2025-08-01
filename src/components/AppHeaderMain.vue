@@ -34,16 +34,14 @@
           style="min-width: 220px;"
         >
           <v-list density="comfortable" nav>
-            <v-list-item link>
-              <v-list-item-icon>
-                <v-icon>mdi-account-circle</v-icon>
-              </v-list-item-icon>
+            
+            <v-list-item
+              link
+              prepend-icon="mdi-account-circle"
+              :title="user.email"
+              @click=""
+            />
 
-              <v-list-item-content>
-                <v-list-item-title>{{ $t('menu_account.account') }}</v-list-item-title>
-                <v-list-item-subtitle>Correo: {{ user.email }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
 
             <v-divider class="my-2" />
 

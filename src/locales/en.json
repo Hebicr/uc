@@ -76,6 +76,12 @@
     "required": "This field is required",
     "invalidEmail": "Invalid email",
     "passwordTooShort": "Password must be at least 6 characters",
-    "passwordMismatch": "Passwords do not match"
+    "passwordMismatch": "Passwords do not match",
+    "invalidRole": "Invalid role"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "user": "Usuario",
+    "supervisor": "Supervisor"
   }
 }
